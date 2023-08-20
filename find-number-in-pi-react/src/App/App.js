@@ -3,6 +3,7 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton";
 import { PI } from '../PI';
 import style from './App.module.css';
+import { TypeAnimation } from "react-type-animation";
 
 const digitsInRow = Math.floor((1265 - 3) / (16 * 0.6 + 3));
 
@@ -86,6 +87,15 @@ export default function App() {
   return (
     <>
       <div className={style.test}></div>
+      <TypeAnimation
+        sequence={[
+          "Find your number in 1M digits of PI!",
+          1000,
+        ]}
+        speed={50}
+        repeat={1}
+        style={{ fontSize: "3em", color: "white", fontWeight: "bold", fontFamily: "monospace" }}
+      />
       <ScrollToTopButton />
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div ref={piWrapperRef} className={style.piWrapper}>

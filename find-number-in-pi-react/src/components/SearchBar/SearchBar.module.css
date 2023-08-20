@@ -1,0 +1,41 @@
+.searchWrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.searchBox {
+  position: relative;
+  background-color: white;
+  width: 600px;
+  height: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.searchBox input {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  background-color: transparent;
+  color: black;
+  border: none;
+  outline: none;
+  padding: 0 15px;
+}
+
+.searchBox input::placeholder {
+  color: gray;
+}
+
+.btn {
+  height: 30px;
+  padding: 0 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgb(5, 182, 5);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,23 @@
+.piWrapper {
+  width: 1265px;
+  height: fit-content;
+  position: relative;
+}
+
+.pi, .piStart {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  /* line-height: 19px; */
+  letter-spacing: 3px;
+  color: rgb(5, 182, 5);
+}
+
+.pi {
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.piStart {
+  position: absolute;
+  left: calc(-16px * 2 * 0.6 - 3px * 2);
+}

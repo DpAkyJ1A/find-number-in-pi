@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #060606;
+  padding: 2rem 0;
+}
+
+#root {
+  width: 1265px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.highlight {
+  background-image: linear-gradient(to right, rgba(255, 0, 0, 0.6) 50%, rgba(255, 0, 0, 0.6) 50%);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  /* transition: background-size 0.3s ease-in-out; */
+  animation: highlightAnimation .5s linear forwards;
+}
+
+@keyframes highlightAnimation {
+  0% {
+    background-size: 0 100%;
+  }
+  60% {
+    background-size: 80% 100%;
+  }
+  100% {
+    background-size: 100% 100%;
+  }
+}

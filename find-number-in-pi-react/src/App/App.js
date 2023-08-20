@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import SearchBar from "../components/SearchBar/SearchBar";
+import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton";
 import { PI } from '../PI';
 import style from './App.module.css';
 
@@ -85,6 +86,7 @@ export default function App() {
   return (
     <>
       <div className={style.test}></div>
+      <ScrollToTopButton />
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div ref={piWrapperRef} className={style.piWrapper}>
         <span className={style.piStart}>{PIBeforeComa}</span>
@@ -93,8 +95,7 @@ export default function App() {
             className={style.pi}
             key={`pi ${i * batchSize}-${(i + 1) * batchSize}`}
             dangerouslySetInnerHTML={{ __html: PIBatch }}
-          >
-          </p>
+          ></p>
         ))}
       </div>
     </>

@@ -8,9 +8,24 @@ export default function SearchBar(props) {
     setTempQuery(props.searchQuery);
   }, [props.searchQuery]);
 
+  const handleBtnClick = () => {
+    props.setSearchQuery(tempQuery);
+    setTimeout(() => {
+      props.setIsNotFound(false);
+    }, 1000);
+  }
+
+  const handleEnterKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleBtnClick();
+    }
+  };
+
   return (
     <div className={style.searchWrapper}>
-      <div className={`${style.searchBox} ${props.isNotFound ? style.shake : ''}`}>
+      <div
+        className={`${style.searchBox} ${props.isNotFound ? style.shake : ""}`}
+      >
         <input
           type="text"
           placeholder="Search..."
@@ -23,17 +38,10 @@ export default function SearchBar(props) {
             )
               setTempQuery(e.target.value);
           }}
+          onKeyDown={handleEnterKeyPress}
         />
       </div>
-      <button
-        className={style.btn}
-        onClick={() => {
-          props.setSearchQuery(tempQuery);
-          setTimeout(() => {
-            props.setIsNotFound(false);
-          }, 1000);
-        }}
-      >
+      <button className={style.btn} onClick={handleBtnClick}>
         Find me!
       </button>
     </div>

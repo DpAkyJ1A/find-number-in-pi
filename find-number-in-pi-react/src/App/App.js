@@ -77,20 +77,7 @@ export default function App() {
     const totalTop = lineIndex * 16 * 1.15 + top;
     const targetScrollHeight =
       screenHeight < totalTop ? totalTop - screenHeight / 2 : 0;
-    
-    // const infoTopCalc =
-    //   Math.floor((searchIndex + searchQuery.length - 1) / digitsInRow) + 1 ===
-    //   lineIndex
-    //     ? totalTop - 16 * 1.15
-    //     : totalTop;
-    
-    // const infoLeftCalc =
-    //   left +
-    //   (((searchIndex + searchQuery.length - 1) % digitsInRow) + 1) *
-    //     (16 * 0.6 + 3);
-    
-    // setInfoTop(infoTopCalc);
-    // setInfoLeft(infoLeftCalc);
+
 
     if (targetScrollHeight > 0) {
       window.scrollTo({
@@ -106,52 +93,59 @@ export default function App() {
 
         isScrolling = setTimeout(function () {
           setPIBatchArray(PIBatchArrayCopy);
-          // setTimeout(() => {
-          //   setIndex(searchIndex);
-          // }, 500);
-          // setTimeout(() => {
-          //   setShowText(true);
-          // }, 1500);
           window.removeEventListener("scroll", detectScrollStop);
-          return searchIndex;
         }, scrollTimeout);
       }
 
       window.addEventListener("scroll", detectScrollStop);
     } else {
       setPIBatchArray(PIBatchArrayCopy);
-      // setTimeout(() => {
-      //   setIndex(searchIndex);
-      // }, 500);
-      // setTimeout(() => {
-      //   setShowText(true);
-      // }, 1500);
     }
 
-    return searchIndex;
+    return {
+      searchIndex: searchIndex,
+      length: searchQuery.length,
+      lineIndex: lineIndex,
+    };
   }
 
   useEffect(() => {
     if (searchQuery !== "") {
-      handleSearchChange().then((searchIndex) => {
-        setTimeout(() => {
+      handleSearchChange().then((props) => {
+        const showInfo = (props) => {
           const highlight = document.querySelector(".highlight");
-          const { top, right } = highlight.getBoundingClientRect();
-          setInfoTop(top + window.scrollY);
-          setInfoLeft(right + window.scrollX);
-
-          console.log(`top = ${top}`);
-          console.log(`window.scrollY = ${window.scrollY}`);
-          console.log(`right = ${right}`);
-          console.log(`window.scrollX = ${window.scrollX}`);
+          const { top, right, left } = highlight.getBoundingClientRect();
+          setInfoTop(
+            Math.floor((props.searchIndex + props.length - 1) / digitsInRow) +
+              1 ===
+              props.lineIndex
+              ? top + window.scrollY
+              : top + 16 * 1.15 + window.scrollY
+          );
+          setInfoLeft(
+            Math.floor((props.searchIndex + props.length - 1) / digitsInRow) +
+              1 ===
+              props.lineIndex
+              ? right + window.scrollX
+              : left +
+                  (((props.searchIndex + props.length - 1) % digitsInRow) + 1) *
+                  (16 * 0.6 + 3) +
+                  window.scrollX
+          );
 
           setTimeout(() => {
-            setIndex(searchIndex);
+            setIndex(props.searchIndex);
           }, 500);
           setTimeout(() => {
             setShowText(true);
           }, 1500);
-        }, 1000);
+        };
+
+        if (props.searchIndex !== -1) {
+          setTimeout(() => {
+            showInfo(props);
+          }, 1500);
+        }
       });
     }
   }, [searchQuery]);

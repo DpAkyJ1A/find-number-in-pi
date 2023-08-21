@@ -38,7 +38,7 @@ export default function App() {
   const [infoTop, setInfoTop] = useState(-100);
   const [infoLeft, setInfoLeft] = useState(-100);
 
-  function handleSearchChange() {
+  async function handleSearchChange() {
     setIndex(null);
     setShowText(false);
 
@@ -78,19 +78,19 @@ export default function App() {
     const targetScrollHeight =
       screenHeight < totalTop ? totalTop - screenHeight / 2 : 0;
     
-    const infoTopCalc =
-      Math.floor((searchIndex + searchQuery.length - 1) / digitsInRow) + 1 ===
-      lineIndex
-        ? totalTop - 16 * 1.15
-        : totalTop;
+    // const infoTopCalc =
+    //   Math.floor((searchIndex + searchQuery.length - 1) / digitsInRow) + 1 ===
+    //   lineIndex
+    //     ? totalTop - 16 * 1.15
+    //     : totalTop;
     
-    const infoLeftCalc =
-      left +
-      (((searchIndex + searchQuery.length - 1) % digitsInRow) + 1) *
-        (16 * 0.6 + 3);
+    // const infoLeftCalc =
+    //   left +
+    //   (((searchIndex + searchQuery.length - 1) % digitsInRow) + 1) *
+    //     (16 * 0.6 + 3);
     
-    setInfoTop(infoTopCalc);
-    setInfoLeft(infoLeftCalc);
+    // setInfoTop(infoTopCalc);
+    // setInfoLeft(infoLeftCalc);
 
     if (targetScrollHeight > 0) {
       window.scrollTo({
@@ -106,31 +106,53 @@ export default function App() {
 
         isScrolling = setTimeout(function () {
           setPIBatchArray(PIBatchArrayCopy);
-          setTimeout(() => {
-            setIndex(searchIndex);
-          }, 500);
-          setTimeout(() => {
-            setShowText(true);
-          }, 1500);
+          // setTimeout(() => {
+          //   setIndex(searchIndex);
+          // }, 500);
+          // setTimeout(() => {
+          //   setShowText(true);
+          // }, 1500);
           window.removeEventListener("scroll", detectScrollStop);
+          return searchIndex;
         }, scrollTimeout);
       }
 
       window.addEventListener("scroll", detectScrollStop);
     } else {
       setPIBatchArray(PIBatchArrayCopy);
-      setTimeout(() => {
-        setIndex(searchIndex);
-      }, 500);
-      setTimeout(() => {
-        setShowText(true);
-      }, 1500);
+      // setTimeout(() => {
+      //   setIndex(searchIndex);
+      // }, 500);
+      // setTimeout(() => {
+      //   setShowText(true);
+      // }, 1500);
     }
+
+    return searchIndex;
   }
 
   useEffect(() => {
     if (searchQuery !== "") {
-      handleSearchChange();
+      handleSearchChange().then((searchIndex) => {
+        setTimeout(() => {
+          const highlight = document.querySelector(".highlight");
+          const { top, right } = highlight.getBoundingClientRect();
+          setInfoTop(top + window.scrollY);
+          setInfoLeft(right + window.scrollX);
+
+          console.log(`top = ${top}`);
+          console.log(`window.scrollY = ${window.scrollY}`);
+          console.log(`right = ${right}`);
+          console.log(`window.scrollX = ${window.scrollX}`);
+
+          setTimeout(() => {
+            setIndex(searchIndex);
+          }, 500);
+          setTimeout(() => {
+            setShowText(true);
+          }, 1500);
+        }, 1000);
+      });
     }
   }, [searchQuery]);
 

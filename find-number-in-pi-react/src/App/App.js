@@ -5,13 +5,15 @@ import { PI } from '../PI';
 import style from './App.module.css';
 import { TypeAnimation } from "react-type-animation";
 
+const MILLIONS = 5;
+const PIReduced = PI.slice(0, MILLIONS * 1000000);
 const digitsInRow = Math.floor((1265 - 3) / (16 * 0.6 + 3));
 
 export default function App() {
   const piWrapperRef = useRef(null);
   const batchSize = 100000;
-  const PIDigitsAfterComa = PI.slice(2);
-  const PIBeforeComa = PI.slice(0, 2);
+  const PIDigitsAfterComa = PIReduced.slice(2);
+  const PIBeforeComa = PIReduced.slice(0, 2);
   const [PIBatchArray, setPIBatchArray] = useState(
     (() => {
       let PIBatchArray = [];
@@ -96,9 +98,8 @@ export default function App() {
 
   return (
     <>
-      <div className={style.test}></div>
       <TypeAnimation
-        sequence={["Find your number in 1M digits of PI!", 1000]}
+        sequence={[`Find your number in ${MILLIONS}M digits of PI!`, 1000]}
         speed={50}
         repeat={1}
         style={{
@@ -108,7 +109,6 @@ export default function App() {
           fontFamily: "monospace",
         }}
       />
-      <ScrollToTopButton />
       <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -125,6 +125,8 @@ export default function App() {
           ></p>
         ))}
       </div>
+      <div className={style.info}></div>
+      <ScrollToTopButton />
     </>
   );
 }

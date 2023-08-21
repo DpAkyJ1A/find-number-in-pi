@@ -39,3 +39,20 @@ body {
     background-size: 100% 100%;
   }
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000; /* Черный цвет для фона трека */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(5, 182, 5); /* Зеленый цвет для ползунка скроллбара */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00AA00; /* Темнозеленый цвет при наведении */
+}

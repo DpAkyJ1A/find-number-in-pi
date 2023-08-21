@@ -17,7 +17,10 @@ export default function SearchBar(props) {
           value={tempQuery}
           onChange={(e) => {
             const regex = /^\d+$/;
-            if (regex.test(e.target.value) || e.target.value === "")
+            if (
+              (regex.test(e.target.value) || e.target.value === "") &&
+              e.target.value.length <= 30
+            )
               setTempQuery(e.target.value);
           }}
         />

@@ -25,9 +25,9 @@ export default function App() {
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPIBatchIndex, setSelectedPIBatchIndex] = useState(null);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   function handleSearchChange() {
-    debugger;
     const PIBatchArrayCopy = PIBatchArray.slice();
     if (typeof selectedPIBatchIndex === 'number') {
       PIBatchArrayCopy[selectedPIBatchIndex] = PIDigitsAfterComa.slice(
@@ -37,9 +37,17 @@ export default function App() {
     }
 
     const searchIndex = PIDigitsAfterComa.indexOf(searchQuery);
+
+    if (searchIndex == -1) {
+      setPIBatchArray(PIBatchArrayCopy);
+      setSelectedPIBatchIndex(null);
+      setIsNotFound(true);
+      setSearchQuery('');
+      return;
+    }
+
     const PIBatchIndex = Math.floor(searchIndex / batchSize);
     setSelectedPIBatchIndex(PIBatchIndex);
-    console.log(PIBatchIndex);
     const regex = new RegExp(`(${searchQuery})`, "i");
     const lineIndex = Math.floor(searchIndex / digitsInRow) + 1;
 
@@ -47,6 +55,8 @@ export default function App() {
       regex,
       '<span class="highlight">$1</span>'
     );
+
+    setSearchQuery('');
 
     const screenHeight = window.innerHeight;
     const { top } = piWrapperRef.current.getBoundingClientRect();
@@ -88,16 +98,23 @@ export default function App() {
     <>
       <div className={style.test}></div>
       <TypeAnimation
-        sequence={[
-          "Find your number in 1M digits of PI!",
-          1000,
-        ]}
+        sequence={["Find your number in 1M digits of PI!", 1000]}
         speed={50}
         repeat={1}
-        style={{ fontSize: "3em", color: "white", fontWeight: "bold", fontFamily: "monospace" }}
+        style={{
+          fontSize: "3em",
+          color: "white",
+          fontWeight: "bold",
+          fontFamily: "monospace",
+        }}
       />
       <ScrollToTopButton />
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        isNotFound={isNotFound}
+        setIsNotFound={setIsNotFound}
+      />
       <div ref={piWrapperRef} className={style.piWrapper}>
         <span className={style.piStart}>{PIBeforeComa}</span>
         {PIBatchArray.map((PIBatch, i) => (
